@@ -22,7 +22,7 @@ public class SchoolTest {
 	@BeforeEach
 	void createSchool() {
 		school = School.builder()
-				.name("kostya")
+				.name("grand")
 				.build();
 	}
 

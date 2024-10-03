@@ -11,6 +11,7 @@
         <mapping class="com.mmdev.dictionaryy.entity.school.School"/>
         <mapping class="com.mmdev.dictionaryy.entity.topics.Topic"/>
         <mapping class="com.mmdev.dictionaryy.entity.admins.Admin"/>
+        <mapping class="com.mmdev.dictionaryy.entity.admins.SuperAdmin"/>
         <mapping class="com.mmdev.dictionaryy.entity.topics.SubTopic"/>
         <mapping class="com.mmdev.dictionaryy.entity.words.EngWord"/>
         <mapping class="com.mmdev.dictionaryy.entity.student.Student"/>

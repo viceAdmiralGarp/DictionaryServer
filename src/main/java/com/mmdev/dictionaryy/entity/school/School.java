@@ -2,11 +2,14 @@ package com.mmdev.dictionaryy.entity.school;
 
 import com.mmdev.dictionaryy.entity.topics.Topic;
 import com.mmdev.dictionaryy.entity.admins.Admin;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +21,7 @@ import lombok.ToString;
 
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -25,7 +29,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = "admin")
 @EqualsAndHashCode
 @Builder
 @Entity
@@ -38,10 +42,15 @@ public class School {
 
 	private String name;
 
-	@ManyToOne(fetch = LAZY)
+	@OneToOne(cascade = ALL)
+	@JoinColumn(name ="admin_id")
 	private Admin admin;
 
 	@OneToMany(mappedBy = "school")
 	private List<Topic> topics;
 
+	public void setAdmin(Admin admin) {
+		admin.setSchool(this);
+		this.admin = admin;
+	}
 }
