@@ -71,6 +71,7 @@ public class AdminTest {
 		session.persist(grand);
 	}
 
+
 	@Test
 	void getAdminById() {
 		Admin adminById = session.get(Admin.class, 1);
