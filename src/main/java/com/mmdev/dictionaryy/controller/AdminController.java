@@ -1,10 +1,12 @@
 package com.mmdev.dictionaryy.controller;
 
 import com.mmdev.dictionaryy.entity.admins.Admin;
+import com.mmdev.dictionaryy.exception.EntityNotFoundException;
 import com.mmdev.dictionaryy.model.AdminDto;
 import com.mmdev.dictionaryy.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,38 +23,36 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
 
-	private AdminService adminService;
+	private final AdminService adminService;
 
 	@GetMapping
-	public List<Admin> getAllAdmins() {
+	public List<AdminDto> getAllAdmins() {
 		return adminService.getAllAdmins();
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<AdminDto> getAdminById(@PathVariable Integer id) {
-		AdminDto admin = adminService.getAdminById(id);
-		if (admin == null) {
-			return ResponseEntity.notFound().build();
-		}
+	public ResponseEntity<AdminDto> getAdminById(@PathVariable Long id) {
+		AdminDto admin = adminService.getAdminById(id)
+				.orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));
 		return ResponseEntity.ok(admin);
 	}
 
 	@PostMapping
-	public Admin createAdmin(@RequestBody Admin admin) {
+	public AdminDto createAdmin(@RequestBody @Validated AdminDto admin) {
 		return adminService.createAdmin(admin);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Admin> updateAdmin(
-			@PathVariable Integer id,
-			@RequestBody Admin admin) {
-		Admin updatedAdmin = adminService.updateAdmin(id, admin);
+	public ResponseEntity<AdminDto> updateAdmin(
+			@PathVariable Long id,
+			@RequestBody @Validated AdminDto adminDto) {
+		AdminDto updatedAdmin = adminService.updateAdminById(id, adminDto);
 		return ResponseEntity.ok(updatedAdmin);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteAdmin(@PathVariable Integer id) {
-		adminService.deleteAdmin(id);
+	public ResponseEntity<Void> deleteAdmin(@PathVariable Long id) {
+		adminService.deleteAdminById(id);
 		return ResponseEntity.noContent().build();
 	}
 }

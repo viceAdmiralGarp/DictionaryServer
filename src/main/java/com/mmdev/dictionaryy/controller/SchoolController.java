@@ -1,9 +1,10 @@
 package com.mmdev.dictionaryy.controller;
 
-import com.mmdev.dictionaryy.entity.school.School;
+import com.mmdev.dictionaryy.model.SchoolDto;
 import com.mmdev.dictionaryy.service.SchoolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,16 +21,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SchoolController {
 
-	private SchoolService schoolService;
+	private final SchoolService schoolService;
 
 	@GetMapping
-	public List<School> getAllSchools() {
+	public List<SchoolDto> getAllSchools() {
 		return schoolService.getAllSchools();
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<School> getSchoolById(@PathVariable Long id) {
-		School school = schoolService.getSchoolById(id);
+	public ResponseEntity<SchoolDto> getSchoolById(@PathVariable Long id) {
+		SchoolDto school = schoolService.getSchoolById(id);
 		if (school == null) {
 			return ResponseEntity.notFound().build();
 		}
@@ -37,15 +38,15 @@ public class SchoolController {
 	}
 
 	@PostMapping
-	public School createSchool(@RequestBody School school) {
+	public SchoolDto createSchool(@RequestBody @Validated SchoolDto school) {
 		return schoolService.createSchool(school);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<School> updateSchool(
+	public ResponseEntity<SchoolDto> updateSchool(
 			@PathVariable Long id,
-			@RequestBody School school) {
-		School updatedSchool = schoolService.updateSchool(id, school);
+			@RequestBody @Validated SchoolDto school) {
+		SchoolDto updatedSchool = schoolService.updateSchool(id, school);
 		return ResponseEntity.ok(updatedSchool);
 	}
 

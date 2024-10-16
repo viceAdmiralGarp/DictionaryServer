@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TopicController {
 
-	private TopicService topicService;
+	private final TopicService topicService;
 
 	@GetMapping
 	public List<Topic> getAllTopics() {

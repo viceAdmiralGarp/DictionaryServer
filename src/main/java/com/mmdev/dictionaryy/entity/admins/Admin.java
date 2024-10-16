@@ -32,14 +32,14 @@ public class Admin {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	private Integer id;
+	private Long id;
 
 	private String name;
 
 	@OneToOne(mappedBy = "admin",
 			cascade = ALL,
-			orphanRemoval = true,
-			fetch = LAZY)
+			fetch = LAZY,
+			optional = false)
 	private School school;
 
 	private String email;

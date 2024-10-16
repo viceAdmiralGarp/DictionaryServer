@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TopicService {
 
-	private TopicRepository topicRepository;
+	private final TopicRepository topicRepository;
 
 	public List<Topic> getAllTopics() {
 		return topicRepository.findAll();

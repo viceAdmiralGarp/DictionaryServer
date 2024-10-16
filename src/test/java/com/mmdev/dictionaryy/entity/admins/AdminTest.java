@@ -56,7 +56,7 @@ public class AdminTest {
 	@Test
 	void saveAdmin() {
 		School grand = School.builder()
-				.name("Grand")
+				.name("vita")
 				.topics(new ArrayList<>(Collections.singletonList(topic)))
 				.build();
 
@@ -64,11 +64,10 @@ public class AdminTest {
 				.name("Alex")
 				.email("Alex@gmail.com")
 				.password("123")
-				.school(grand)
 				.build();
 
 		grand.setAdmin(alex);
-		session.persist(grand);
+		session.save(alex);
 	}
 
 
