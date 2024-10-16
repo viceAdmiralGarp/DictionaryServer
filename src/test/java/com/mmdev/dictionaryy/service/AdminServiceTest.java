@@ -92,7 +92,6 @@ class AdminServiceTest {
 
 	@Test
 	void createAdmin() {
-		doReturn(O)
 	}
 
 	@Test
