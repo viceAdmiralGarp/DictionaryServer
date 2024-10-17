@@ -12,4 +12,10 @@ public class ExceptionsControllerManager {
 	public String handleEntityNotFound(EntityNotFoundException e) {
 		return e.getMessage();
 	}
+
+	@ResponseStatus(HttpStatus.CONFLICT)
+	@ExceptionHandler({EntityAlreadyRelatedException.class})
+	public String entityAlreadyRelated(EntityAlreadyRelatedException e){
+		return e.getMessage();
+	}
 }

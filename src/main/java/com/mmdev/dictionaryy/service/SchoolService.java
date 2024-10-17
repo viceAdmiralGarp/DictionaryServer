@@ -2,18 +2,18 @@ package com.mmdev.dictionaryy.service;
 
 import com.mmdev.dictionaryy.entity.admins.Admin;
 import com.mmdev.dictionaryy.entity.school.School;
+import com.mmdev.dictionaryy.exception.EntityAlreadyRelatedException;
 import com.mmdev.dictionaryy.exception.EntityNotFoundException;
 import com.mmdev.dictionaryy.mapper.school.SchoolDtoMapper;
 import com.mmdev.dictionaryy.mapper.school.SchoolMapper;
 import com.mmdev.dictionaryy.model.SchoolDto;
 import com.mmdev.dictionaryy.repository.AdminRepository;
 import com.mmdev.dictionaryy.repository.SchoolRepository;
-import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,20 +48,29 @@ public class SchoolService {
 				.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + id));
 
 		if (school.getName().equals(schoolDto.name())) {
-			throw new EntityExistsException(schoolDto.name() + " is already in use by another school.");
-		} else if (Objects.equals(school.getAdmin().getId(), id)) {
-			throw new EntityExistsException("The admin with " + id + " already relating to another school.");
+			throw new EntityAlreadyRelatedException(
+					"The School" + schoolDto.name() + " is already in use by another school.");
 		}
-		Admin admin = adminRepository.findById(school.getAdmin().getId())
-				.orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));
 
 		school.setName(schoolDto.name());
-		school.setAdmin(admin);
+
+		if (school.getAdmin() == null || !school.getAdmin().getId().equals(schoolDto.adminId())) {
+			Admin admin = adminRepository.findById(schoolDto.adminId())
+					.orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + schoolDto.adminId()));
+
+			Optional<School> optionalSchoolByAdminId = schoolRepository.findByAdminId(schoolDto.adminId());
+
+			if (optionalSchoolByAdminId.isPresent() && !optionalSchoolByAdminId.get().getId().equals(id)) {
+				throw new EntityAlreadyRelatedException(
+						"The administrator with this ID " + schoolDto.adminId() + " belongs to another school.");
+			}
+			school.setAdmin(admin);
+		}
+		schoolRepository.save(school);
 		return schoolDtoMapper.map(school);
 	}
 
 	public void deleteSchool(Long id) {
 		schoolRepository.deleteById(id);
 	}
-
 }
