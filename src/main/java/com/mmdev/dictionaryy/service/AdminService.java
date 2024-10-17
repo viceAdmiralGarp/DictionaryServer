@@ -36,7 +36,7 @@ public class AdminService {
 	}
 
 	public AdminDto createAdmin(AdminDto adminDto) {
-		Admin admin =  adminMapper.map(adminDto);
+		Admin admin = adminMapper.map(adminDto);
 		Admin savedAdmin = adminRepository.save(admin);
 		return adminDtoMapper.map(savedAdmin);
 	}
@@ -58,9 +58,10 @@ public class AdminService {
 	}
 
 	public void deleteAdminById(Long id) {
-		if(adminRepository.findById(id).isEmpty()){
-			throw new EntityNotFoundException("Admin not found with id: " + id);
-		}
+		adminRepository.findById(id).
+				orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));
+
+
 		adminRepository.deleteById(id);
 	}
 

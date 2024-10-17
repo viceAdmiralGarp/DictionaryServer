@@ -63,5 +63,4 @@ public class AdminController{
 		AdminDto updatedAdmin = adminService.patchAdminById(id, updates);
 		return ResponseEntity.ok(updatedAdmin);
 	}
-
 }

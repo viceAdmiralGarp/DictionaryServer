@@ -71,6 +71,8 @@ public class SchoolService {
 	}
 
 	public void deleteSchool(Long id) {
+		schoolRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + id));
 		schoolRepository.deleteById(id);
 	}
 }
