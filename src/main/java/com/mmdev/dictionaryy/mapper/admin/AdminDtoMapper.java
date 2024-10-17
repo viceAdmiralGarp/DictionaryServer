@@ -10,6 +10,7 @@ public class AdminDtoMapper implements Mapper<Admin, AdminDto> {
 	@Override
 	public AdminDto map(Admin object) {
 		return AdminDto.builder()
+				.id(object.getId())
 				.name(object.getName())
 				.email(object.getEmail())
 				.password(object.getPassword())

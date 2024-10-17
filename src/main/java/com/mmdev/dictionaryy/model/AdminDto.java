@@ -7,6 +7,8 @@ import lombok.Builder;
 
 @Builder
 public record AdminDto(
+		Long id,
+
 		@NotNull
 		@Size(max = 64)
 		String name,

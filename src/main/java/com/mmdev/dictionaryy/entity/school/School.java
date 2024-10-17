@@ -2,6 +2,7 @@ package com.mmdev.dictionaryy.entity.school;
 
 import com.mmdev.dictionaryy.entity.topics.Topic;
 import com.mmdev.dictionaryy.entity.admins.Admin;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

@@ -10,6 +10,7 @@ public class SchoolDtoMapper implements Mapper<School, SchoolDto> {
 	@Override
 	public SchoolDto map(School object) {
 		return SchoolDto.builder()
+				.id(object.getId())
 				.name(object.getName())
 				.adminId(object.getAdmin().getId())
 				.build();

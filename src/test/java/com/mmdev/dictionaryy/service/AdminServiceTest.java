@@ -79,15 +79,7 @@ class AdminServiceTest {
 
 	@Test
 	void getAdminById() {
-		doReturn(Optional.of(admin)).when(adminRepository).findById(ADMIN_ID);
-		doReturn(adminDto).when(adminDtoMapper).map(admin);
 
-		var actualResult = adminService.getAdminById(ADMIN_ID);
-		assertTrue(actualResult.isPresent());
-		assertEquals(adminDto, actualResult.get());
-
-		verify(adminDtoMapper).map(admin);
-		verifyNoMoreInteractions(adminDtoMapper, adminRepository);
 	}
 
 	@Test

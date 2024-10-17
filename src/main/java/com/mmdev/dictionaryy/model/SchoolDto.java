@@ -6,6 +6,8 @@ import lombok.Builder;
 
 @Builder
 public record SchoolDto(
+		Long id,
+
 		@NotNull
 		@Size(max = 256)
 		String name,

@@ -31,15 +31,13 @@ public class SchoolController {
 	@GetMapping("/{id}")
 	public ResponseEntity<SchoolDto> getSchoolById(@PathVariable Long id) {
 		SchoolDto school = schoolService.getSchoolById(id);
-		if (school == null) {
-			return ResponseEntity.notFound().build();
-		}
 		return ResponseEntity.ok(school);
 	}
 
 	@PostMapping
-	public SchoolDto createSchool(@RequestBody @Validated SchoolDto school) {
-		return schoolService.createSchool(school);
+	public ResponseEntity<SchoolDto> createSchool(@RequestBody @Validated SchoolDto schoolDto) {
+		SchoolDto school = schoolService.createSchool(schoolDto);
+		return ResponseEntity.ok(school);
 	}
 
 	@PutMapping("/{id}")

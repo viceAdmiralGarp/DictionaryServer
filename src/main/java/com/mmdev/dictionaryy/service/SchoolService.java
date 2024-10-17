@@ -1,14 +1,19 @@
 package com.mmdev.dictionaryy.service;
+
+import com.mmdev.dictionaryy.entity.admins.Admin;
 import com.mmdev.dictionaryy.entity.school.School;
 import com.mmdev.dictionaryy.exception.EntityNotFoundException;
 import com.mmdev.dictionaryy.mapper.school.SchoolDtoMapper;
 import com.mmdev.dictionaryy.mapper.school.SchoolMapper;
 import com.mmdev.dictionaryy.model.SchoolDto;
+import com.mmdev.dictionaryy.repository.AdminRepository;
 import com.mmdev.dictionaryy.repository.SchoolRepository;
+import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,6 +21,7 @@ import java.util.stream.Collectors;
 public class SchoolService {
 
 	private final SchoolRepository schoolRepository;
+	private final AdminRepository adminRepository;
 	private final SchoolDtoMapper schoolDtoMapper;
 	private final SchoolMapper schoolMapper;
 
@@ -41,8 +47,17 @@ public class SchoolService {
 		School school = schoolRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + id));
 
+		if (school.getName().equals(schoolDto.name())) {
+			throw new EntityExistsException(schoolDto.name() + " is already in use by another school.");
+		} else if (Objects.equals(school.getAdmin().getId(), id)) {
+			throw new EntityExistsException("The admin with " + id + " already relating to another school.");
+		}
+		Admin admin = adminRepository.findById(school.getAdmin().getId())
+				.orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));
 
-		return null;
+		school.setName(schoolDto.name());
+		school.setAdmin(admin);
+		return schoolDtoMapper.map(school);
 	}
 
 	public void deleteSchool(Long id) {
