@@ -50,17 +50,18 @@ public class AdminController{
 		return ResponseEntity.ok(updatedAdmin);
 	}
 
+	//Do I really need this method if I have a NOTNULL annotation over the fields?
+	@PatchMapping("/{id}")
+	public ResponseEntity<AdminDto> patchAdmin(@PathVariable Long id, @RequestBody Map<String, Object> updates) {
+		AdminDto updatedAdmin = adminService.patchAdminById(id, updates);
+		return ResponseEntity.ok(updatedAdmin);
+	}
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteAdmin(@PathVariable Long id) {
 		adminService.deleteAdminById(id);
 		return ResponseEntity.ok().build();
 	}
 
-	@PatchMapping("/{id}")
-	public ResponseEntity<AdminDto> patchAdmin(
-			@PathVariable Long id,
-			@RequestBody Map<String, Object> updates) {
-		AdminDto updatedAdmin = adminService.patchAdminById(id, updates);
-		return ResponseEntity.ok(updatedAdmin);
-	}
+
 }

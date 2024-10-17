@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -44,6 +45,38 @@ public class SchoolService {
 	}
 
 	public SchoolDto updateSchool(Long id, SchoolDto schoolDto) {
+		School school = schoolValidation(id, schoolDto);
+		schoolRepository.save(school);
+		return schoolDtoMapper.map(school);
+	}
+
+	//Do I really need this method if I have a NOTNULL annotation over the fields?
+	public SchoolDto patchSchoolById(Long id, Map<String, Object> updates) {
+		School schoolById = schoolRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + id));
+		SchoolDto schoolDto = schoolDtoMapper.map(schoolById);
+		School school = schoolValidation(id, schoolDto);
+		updates.forEach((key, value) -> {
+			switch (key) {
+				case "name":
+					school.setName((String) value);
+					break;
+				case "adminId":
+					school.setAdmin((Admin) value);
+					break;
+			}
+		});
+		School updatedSchool = schoolRepository.save(school);
+		return schoolDtoMapper.map(updatedSchool);
+	}
+
+	public void deleteSchool(Long id) {
+		schoolRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + id));
+		schoolRepository.deleteById(id);
+	}
+
+	private School schoolValidation(Long id, SchoolDto schoolDto) {
 		School school = schoolRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + id));
 
@@ -66,13 +99,6 @@ public class SchoolService {
 			}
 			school.setAdmin(admin);
 		}
-		schoolRepository.save(school);
-		return schoolDtoMapper.map(school);
-	}
-
-	public void deleteSchool(Long id) {
-		schoolRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + id));
-		schoolRepository.deleteById(id);
+		return school;
 	}
 }

@@ -57,14 +57,7 @@ public class AdminService {
 		return adminDtoMapper.map(savedAdmin);
 	}
 
-	public void deleteAdminById(Long id) {
-		adminRepository.findById(id).
-				orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));
-
-
-		adminRepository.deleteById(id);
-	}
-
+	//Do I really need this method if I have a NOTNULL annotation over the fields?
 	public AdminDto patchAdminById(Long id, Map<String, Object> updates) {
 		Admin admin = adminRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));
@@ -85,5 +78,11 @@ public class AdminService {
 
 		Admin savedAdmin = adminRepository.save(admin);
 		return adminDtoMapper.map(savedAdmin);
+	}
+
+	public void deleteAdminById(Long id) {
+		adminRepository.findById(id).
+				orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));
+		adminRepository.deleteById(id);
 	}
 }
