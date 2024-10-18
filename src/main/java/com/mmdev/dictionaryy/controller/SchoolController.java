@@ -43,9 +43,7 @@ public class SchoolController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<SchoolDto> updateSchool(
-			@PathVariable Long id,
-			@RequestBody @Validated SchoolDto school) {
+	public ResponseEntity<SchoolDto> updateSchool(@PathVariable Long id, @RequestBody @Validated SchoolDto school) {
 		SchoolDto updatedSchool = schoolService.updateSchool(id, school);
 		return ResponseEntity.ok(updatedSchool);
 	}

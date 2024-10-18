@@ -1,9 +1,10 @@
 package com.mmdev.dictionaryy.controller;
 
-import com.mmdev.dictionaryy.entity.topics.Topic;
+import com.mmdev.dictionaryy.model.TopicDto;
 import com.mmdev.dictionaryy.service.TopicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,35 +24,31 @@ public class TopicController {
 	private final TopicService topicService;
 
 	@GetMapping
-	public List<Topic> getAllTopics() {
+	public List<TopicDto> getAllTopics() {
 		return topicService.getAllTopics();
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Topic> getTopicById(@PathVariable Long id) {
-		Topic topic = topicService.getTopicById(id);
-		if (topic == null) {
-			return ResponseEntity.notFound().build();
-		}
+	public ResponseEntity<TopicDto> getTopicById(@PathVariable Long id) {
+		TopicDto topic = topicService.getTopicById(id);
 		return ResponseEntity.ok(topic);
 	}
 
 	@PostMapping
-	public Topic createTopic(@RequestBody Topic topic) {
-		return topicService.createTopic(topic);
+	public ResponseEntity<TopicDto> createTopic(@RequestBody @Validated TopicDto topicDto) {
+		TopicDto topic = topicService.createTopic(topicDto);
+		return ResponseEntity.ok(topic);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Topic> updateTopic(
-			@PathVariable Long id,
-			@RequestBody Topic topic) {
-		Topic updatedTopic = topicService.updateTopic(id, topic);
+	public ResponseEntity<TopicDto> updateTopic(@PathVariable Long id, @RequestBody @Validated TopicDto topicDto) {
+		TopicDto updatedTopic = topicService.updateTopic(id, topicDto);
 		return ResponseEntity.ok(updatedTopic);
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteTopic(@PathVariable Long id) {
 		topicService.deleteTopic(id);
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.ok().build();
 	}
 }

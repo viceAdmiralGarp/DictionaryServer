@@ -9,7 +9,9 @@ import com.mmdev.dictionaryy.mapper.school.SchoolMapper;
 import com.mmdev.dictionaryy.model.SchoolDto;
 import com.mmdev.dictionaryy.repository.AdminRepository;
 import com.mmdev.dictionaryy.repository.SchoolRepository;
+import com.mmdev.dictionaryy.validator.EntityValidator;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class SchoolService {
+public class SchoolService implements EntityValidator<School,SchoolDto> {
 
 	private final SchoolRepository schoolRepository;
 	private final AdminRepository adminRepository;
@@ -45,7 +47,7 @@ public class SchoolService {
 	}
 
 	public SchoolDto updateSchool(Long id, SchoolDto schoolDto) {
-		School school = schoolValidation(id, schoolDto);
+		School school = entityValidator(id, schoolDto);
 		schoolRepository.save(school);
 		return schoolDtoMapper.map(school);
 	}
@@ -55,7 +57,7 @@ public class SchoolService {
 		School schoolById = schoolRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + id));
 		SchoolDto schoolDto = schoolDtoMapper.map(schoolById);
-		School school = schoolValidation(id, schoolDto);
+		School school = entityValidator(id, schoolDto);
 		updates.forEach((key, value) -> {
 			switch (key) {
 				case "name":
@@ -76,26 +78,27 @@ public class SchoolService {
 		schoolRepository.deleteById(id);
 	}
 
-	private School schoolValidation(Long id, SchoolDto schoolDto) {
+	@Override
+	public School entityValidator(Long id, SchoolDto dto) {
 		School school = schoolRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + id));
 
-		if (school.getName().equals(schoolDto.name())) {
+		if (school.getName().equals(dto.name())) {
 			throw new EntityAlreadyRelatedException(
-					"The School" + schoolDto.name() + " is already in use by another school.");
+					"The School name '" + dto.name() + "' is already in use by another school.");
 		}
 
-		school.setName(schoolDto.name());
+		school.setName(dto.name());
 
-		if (school.getAdmin() == null || !school.getAdmin().getId().equals(schoolDto.adminId())) {
-			Admin admin = adminRepository.findById(schoolDto.adminId())
-					.orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + schoolDto.adminId()));
+		if (school.getAdmin() == null || !school.getAdmin().getId().equals(dto.adminId())) {
+			Admin admin = adminRepository.findById(dto.adminId())
+					.orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + dto.adminId()));
 
-			Optional<School> optionalSchoolByAdminId = schoolRepository.findByAdminId(schoolDto.adminId());
+			Optional<School> optionalSchoolByAdminId = schoolRepository.findByAdminId(dto.adminId());
 
 			if (optionalSchoolByAdminId.isPresent() && !optionalSchoolByAdminId.get().getId().equals(id)) {
 				throw new EntityAlreadyRelatedException(
-						"The administrator with this ID " + schoolDto.adminId() + " belongs to another school.");
+						"The administrator with this ID " + dto.adminId() + " belongs to another school.");
 			}
 			school.setAdmin(admin);
 		}
