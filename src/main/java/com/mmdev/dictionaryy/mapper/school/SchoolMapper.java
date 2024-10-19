@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class SchoolMapper implements Mapper<SchoolDto, School> {
+public class SchoolMapper implements Mapper<SchoolDto, School> {// use lib for mappers
 
 	private final TopicRepository topicRepository;
 	private final AdminRepository adminRepository;
 
 	@Override
-	public School map(SchoolDto object) {
+	public School map(SchoolDto object) {//move to SchoolDto
 
 		Admin admin = adminRepository.findById(object.adminId())
 				.orElseThrow(() -> new EntityNotFoundException("Admin not found"));

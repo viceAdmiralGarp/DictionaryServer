@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class SchoolService implements EntityValidator<School,SchoolDto> {
+public class SchoolService implements EntityValidator<School,SchoolDto> {// service implements validator?
 
 	private final SchoolRepository schoolRepository;
 	private final AdminRepository adminRepository;
@@ -40,7 +40,7 @@ public class SchoolService implements EntityValidator<School,SchoolDto> {
 				.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + id));
 	}
 
-	public SchoolDto createSchool(SchoolDto schoolDto) {
+	public SchoolDto createSchool(SchoolDto schoolDto) {//void instead of SchoolDto
 		School school = schoolMapper.map(schoolDto);
 		School savedSchool = schoolRepository.save(school);
 		return schoolDtoMapper.map(savedSchool);
@@ -52,7 +52,7 @@ public class SchoolService implements EntityValidator<School,SchoolDto> {
 		return schoolDtoMapper.map(school);
 	}
 
-	//Do I really need this method if I have a NOTNULL annotation over the fields?
+	//Do I really need this method if I have a NOTNULL annotation over the fields? NO
 	public SchoolDto patchSchoolById(Long id, Map<String, Object> updates) {
 		School schoolById = schoolRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + id));
@@ -77,9 +77,12 @@ public class SchoolService implements EntityValidator<School,SchoolDto> {
 				.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + id));
 		schoolRepository.deleteById(id);
 	}
+	// TODO: check custom Spring validations
+	// validations - void
+	// update
 
 	@Override
-	public School entityValidator(Long id, SchoolDto dto) {
+	public School entityValidator(Long id, SchoolDto dto) {//name of method, a lot of responsibilities
 		School school = schoolRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + id));
 
@@ -88,7 +91,7 @@ public class SchoolService implements EntityValidator<School,SchoolDto> {
 					"The School name '" + dto.name() + "' is already in use by another school.");
 		}
 
-		school.setName(dto.name());
+		school.setName(dto.name());//ban
 
 		if (school.getAdmin() == null || !school.getAdmin().getId().equals(dto.adminId())) {
 			Admin admin = adminRepository.findById(dto.adminId())
@@ -100,7 +103,7 @@ public class SchoolService implements EntityValidator<School,SchoolDto> {
 				throw new EntityAlreadyRelatedException(
 						"The administrator with this ID " + dto.adminId() + " belongs to another school.");
 			}
-			school.setAdmin(admin);
+			school.setAdmin(admin);//kuda ti nahui?
 		}
 		return school;
 	}

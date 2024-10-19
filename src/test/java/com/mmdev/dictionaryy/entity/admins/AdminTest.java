@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class AdminTest {
+public class AdminTest {// real DB?
 
 	private Admin admin;
 	private School school;

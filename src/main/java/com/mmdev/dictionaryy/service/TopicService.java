@@ -37,9 +37,9 @@ public class TopicService implements EntityValidator<Topic, TopicDto> {
 				.map(topicDtoMapper::map)
 				.orElseThrow(() -> new EntityNotFoundException("Topic not found with id: " + id));
 	}
-
+//transactional?
 	public TopicDto createTopic(TopicDto topicDto) {
-		Topic topic = topicMapper.map(topicDto);
+		Topic topic = topicMapper.map(topicDto);//use separate lib for mappings
 		Topic savedTopic = topicRepository.save(topic);
 		return topicDtoMapper.map(savedTopic);
 	}
@@ -57,7 +57,7 @@ public class TopicService implements EntityValidator<Topic, TopicDto> {
 	}
 
 	@Override
-	public Topic entityValidator(Long id, TopicDto dto) {
+	public Topic entityValidator(Long id, TopicDto dto) {// ban
 		Topic topic = topicRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Topic not found with id: " + id));
 
@@ -66,7 +66,7 @@ public class TopicService implements EntityValidator<Topic, TopicDto> {
 					"The Topic name '" + dto.name() + "' is already in use by another Topic.");
 		}
 
-		topic.setName(dto.name());
+		topic.setName(dto.name());// we need separate endpoint for updating name
 
 		if (topic.getSchool() == null || !topic.getSchool().getId().equals(dto.schoolId())) {
 			School school = schoolRepository.findById(dto.schoolId())
@@ -78,7 +78,7 @@ public class TopicService implements EntityValidator<Topic, TopicDto> {
 				throw new EntityAlreadyRelatedException(
 						"The administrator with this ID " + dto.schoolId() + " belongs to another school.");
 			}
-			topic.setSchool(school);
+			topic.setSchool(school);// we need separate endpoint for updating school
 		}
 		return topic;
 	}

@@ -39,10 +39,10 @@ public class SchoolController {
 	@PostMapping
 	public ResponseEntity<SchoolDto> createSchool(@RequestBody @Validated SchoolDto schoolDto) {
 		SchoolDto school = schoolService.createSchool(schoolDto);
-		return ResponseEntity.ok(school);
+		return ResponseEntity.ok(school);//.created() instead of ok()
 	}
 
-	@PutMapping("/{id}")
+	@PutMapping("/{id}")// instead of this one endpoint for all cases, create one for update name and one for update admin
 	public ResponseEntity<SchoolDto> updateSchool(@PathVariable Long id, @RequestBody @Validated SchoolDto school) {
 		SchoolDto updatedSchool = schoolService.updateSchool(id, school);
 		return ResponseEntity.ok(updatedSchool);
