@@ -40,12 +40,6 @@ public class TopicController {
 		return ResponseEntity.ok(topic);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<TopicDto> updateTopic(@PathVariable Long id, @RequestBody @Validated TopicDto topicDto) {
-		TopicDto updatedTopic = topicService.updateTopic(id, topicDto);
-		return ResponseEntity.ok(updatedTopic);
-	}
-
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteTopic(@PathVariable Long id) {
 		topicService.deleteTopic(id);

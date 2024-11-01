@@ -44,12 +44,6 @@ public class TopicService implements EntityValidator<Topic, TopicDto> {
 		return topicDtoMapper.map(savedTopic);
 	}
 
-	public TopicDto updateTopic(Long id, TopicDto topicDto) {
-		Topic topic = entityValidator(id, topicDto);
-		Topic savedTopic = topicRepository.save(topic);
-		return topicDtoMapper.map(savedTopic);
-	}
-
 	public void deleteTopic(Long id) {
 		Topic topic = topicRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Topic not found with id: " + id));
@@ -72,13 +66,13 @@ public class TopicService implements EntityValidator<Topic, TopicDto> {
 			School school = schoolRepository.findById(dto.schoolId())
 					.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + dto.schoolId()));
 
-			Optional<Topic> optionalTopicBySchoolId = topicRepository.findBySchoolId(dto.schoolId());
-
-			if (optionalTopicBySchoolId.isPresent() && !optionalTopicBySchoolId.get().getId().equals(id)) {
-				throw new EntityAlreadyRelatedException(
-						"The administrator with this ID " + dto.schoolId() + " belongs to another school.");
-			}
-			topic.setSchool(school);// we need separate endpoint for updating school
+//			Optional<Topic> optionalTopicBySchoolId = topicRepository.findBySchoolId(dto.schoolId());
+//
+//			if (optionalTopicBySchoolId.isPresent() && !optionalTopicBySchoolId.get().getId().equals(id)) {
+//				throw new EntityAlreadyRelatedException(
+//						"The administrator with this ID " + dto.schoolId() + " belongs to another school.");
+//			}
+//			topic.setSchool(school);// we need separate endpoint for updating school
 		}
 		return topic;
 	}

@@ -57,29 +57,6 @@ public class AdminService {
 		return adminDtoMapper.map(savedAdmin);
 	}
 
-	//Do I really need this method if I have a NOTNULL annotation over the fields?
-	public AdminDto patchAdminById(Long id, Map<String, Object> updates) {
-		Admin admin = adminRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));
-
-		updates.forEach((key, value) -> {
-			switch (key) {
-				case "name":
-					admin.setName((String) value);
-					break;
-				case "email":
-					admin.setEmail((String) value);
-					break;
-				case "password":
-					admin.setPassword((String) value);
-					break;
-			}
-		});
-
-		Admin savedAdmin = adminRepository.save(admin);
-		return adminDtoMapper.map(savedAdmin);
-	}
-
 	public void deleteAdminById(Long id) {
 		adminRepository.findById(id).
 				orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));

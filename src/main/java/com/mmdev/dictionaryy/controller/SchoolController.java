@@ -1,5 +1,6 @@
 package com.mmdev.dictionaryy.controller;
 
+import com.mmdev.dictionaryy.model.AdminDto;
 import com.mmdev.dictionaryy.model.SchoolDto;
 import com.mmdev.dictionaryy.service.SchoolService;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/schools")
@@ -37,22 +36,19 @@ public class SchoolController {
 	}
 
 	@PostMapping
-	public ResponseEntity<SchoolDto> createSchool(@RequestBody @Validated SchoolDto schoolDto) {
-		SchoolDto school = schoolService.createSchool(schoolDto);
-		return ResponseEntity.ok(school);//.created() instead of ok()
+	public void createSchool(@RequestBody @Validated SchoolDto schoolDto) {
+		schoolService.createSchool(schoolDto);
 	}
 
-	@PutMapping("/{id}")// instead of this one endpoint for all cases, create one for update name and one for update admin
-	public ResponseEntity<SchoolDto> updateSchool(@PathVariable Long id, @RequestBody @Validated SchoolDto school) {
-		SchoolDto updatedSchool = schoolService.updateSchool(id, school);
-		return ResponseEntity.ok(updatedSchool);
+	@PutMapping("/{id}/school")
+	public void updateSchoolNameById(@PathVariable Long id, @RequestBody String name) {
+		schoolService.updateSchoolNameId(id,name);
+
 	}
 
-	//Do I really need this method if I have a NOTNULL annotation over the fields?
-	@PatchMapping("/{id}")
-	public ResponseEntity<SchoolDto> patchSchool(@PathVariable Long id, @RequestBody Map<String, Object> updates){
-		SchoolDto updatedSchool = schoolService.patchSchoolById(id,updates);
-		return ResponseEntity.ok(updatedSchool);
+	@PutMapping("/{id}/admin")
+	public void updateSchoolAdminById(@PathVariable Long id, @RequestBody AdminDto adminDto) {
+		schoolService.updateSchoolAdminById(id,adminDto);
 	}
 
 	@DeleteMapping("/{id}")

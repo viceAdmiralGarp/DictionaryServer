@@ -2,6 +2,7 @@ package com.mmdev.dictionaryy.entity.school;
 
 import com.mmdev.dictionaryy.entity.topics.Topic;
 import com.mmdev.dictionaryy.entity.admins.Admin;
+import com.mmdev.dictionaryy.model.SchoolDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -48,5 +49,13 @@ public class School {
 	public void setAdmin(Admin admin) {
 		admin.setSchool(this);
 		this.admin = admin;
+	}
+
+	public SchoolDto toDto(){
+		return SchoolDto.builder()
+				.id(id)
+				.name(name)
+				.adminId(admin.getId())
+				.build();
 	}
 }

@@ -22,9 +22,9 @@ public record SchoolDto(
 		Long adminId
 ) {
 
-	public School toSchool(Admin admin , List<Topic> topics) {
+	public School toSchool(Admin admin, List<Topic> topics) {
 		return School.builder()
-				.name(this.name())
+				.name(name)
 				.admin(admin)
 				.topics(topics)
 				.build();

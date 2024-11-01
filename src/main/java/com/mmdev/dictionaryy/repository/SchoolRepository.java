@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface SchoolRepository extends JpaRepository<School, Long> {
 	Optional<School> findByAdminId(Long adminId);
+
+	Optional<School> findSchoolByName(String name);
 }
