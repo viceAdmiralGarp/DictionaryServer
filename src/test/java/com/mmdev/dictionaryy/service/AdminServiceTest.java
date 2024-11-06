@@ -3,7 +3,7 @@ package com.mmdev.dictionaryy.service;
 import com.mmdev.dictionaryy.entity.admins.Admin;
 import com.mmdev.dictionaryy.mapper.admin.AdminDtoMapper;
 import com.mmdev.dictionaryy.mapper.admin.AdminMapper;
-import com.mmdev.dictionaryy.model.AdminDto;
+import com.mmdev.dictionaryy.model.admin.AdminDto;
 import com.mmdev.dictionaryy.repository.AdminRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,10 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

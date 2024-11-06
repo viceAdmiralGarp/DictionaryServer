@@ -1,7 +1,8 @@
 package com.mmdev.dictionaryy.controller;
 
-import com.mmdev.dictionaryy.model.AdminDto;
-import com.mmdev.dictionaryy.model.SchoolDto;
+import com.mmdev.dictionaryy.model.school.SchoolDto;
+import com.mmdev.dictionaryy.model.school.UpdateSchoolByAdminDto;
+import com.mmdev.dictionaryy.model.school.UpdateSchoolNameDto;
 import com.mmdev.dictionaryy.service.SchoolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -41,14 +42,14 @@ public class SchoolController {
 	}
 
 	@PutMapping("/{id}/school")
-	public void updateSchoolNameById(@PathVariable Long id, @RequestBody String name) {
-		schoolService.updateSchoolNameId(id,name);
+	public void updateSchoolNameById(@PathVariable Long id, @RequestBody UpdateSchoolNameDto schoolAdmin) {
+		schoolService.updateSchoolNameId(id, schoolAdmin.name());
 
 	}
 
 	@PutMapping("/{id}/admin")
-	public void updateSchoolAdminById(@PathVariable Long id, @RequestBody AdminDto adminDto) {
-		schoolService.updateSchoolAdminById(id,adminDto);
+	public void updateSchoolAdminById(@PathVariable Long id, @RequestBody UpdateSchoolByAdminDto schoolDto) {
+		schoolService.updateSchoolAdminById(id, schoolDto.adminId());
 	}
 
 	@DeleteMapping("/{id}")

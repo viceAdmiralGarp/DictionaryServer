@@ -1,6 +1,9 @@
 package com.mmdev.dictionaryy.controller;
 
-import com.mmdev.dictionaryy.model.TopicDto;
+import com.mmdev.dictionaryy.model.school.SchoolDto;
+import com.mmdev.dictionaryy.model.topic.TopicDto;
+import com.mmdev.dictionaryy.model.topic.UpdateTopicNameDto;
+import com.mmdev.dictionaryy.model.topic.UpdateTopicSchoolByIdDto;
 import com.mmdev.dictionaryy.service.TopicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +27,9 @@ public class TopicController {
 	private final TopicService topicService;
 
 	@GetMapping
-	public List<TopicDto> getAllTopics() {
-		return topicService.getAllTopics();
+	public ResponseEntity<List<TopicDto>> getAllTopics() {
+		List<TopicDto> allTopics = topicService.getAllTopics();
+		return ResponseEntity.ok(allTopics);
 	}
 
 	@GetMapping("/{id}")
@@ -38,6 +42,16 @@ public class TopicController {
 	public ResponseEntity<TopicDto> createTopic(@RequestBody @Validated TopicDto topicDto) {
 		TopicDto topic = topicService.createTopic(topicDto);
 		return ResponseEntity.ok(topic);
+	}
+
+	@PutMapping("/{id}/topic")
+	public void updateTopicNameById(@PathVariable Long id, @RequestBody UpdateTopicNameDto topicDto) {
+		topicService.updateTopicNameById(id, topicDto.name());
+	}
+
+	@PutMapping("/{id}/school")
+	public void updateTopicSchoolById(@PathVariable Long id, @RequestBody UpdateTopicSchoolByIdDto topicDto) {
+		topicService.updateTopicSchoolById(id, topicDto.schoolId());
 	}
 
 	@DeleteMapping("/{id}")

@@ -4,44 +4,38 @@ import com.mmdev.dictionaryy.entity.school.School;
 import com.mmdev.dictionaryy.entity.topics.Topic;
 import com.mmdev.dictionaryy.exception.EntityAlreadyRelatedException;
 import com.mmdev.dictionaryy.exception.EntityNotFoundException;
-import com.mmdev.dictionaryy.mapper.topic.TopicDtoMapper;
-import com.mmdev.dictionaryy.mapper.topic.TopicMapper;
-import com.mmdev.dictionaryy.model.TopicDto;
+import com.mmdev.dictionaryy.model.topic.TopicDto;
 import com.mmdev.dictionaryy.repository.SchoolRepository;
 import com.mmdev.dictionaryy.repository.TopicRepository;
-import com.mmdev.dictionaryy.validator.EntityValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class TopicService implements EntityValidator<Topic, TopicDto> {
+public class TopicService {
 
 	private final TopicRepository topicRepository;
 	private final SchoolRepository schoolRepository;
-	private final TopicDtoMapper topicDtoMapper;
-	private final TopicMapper topicMapper;
 
 	public List<TopicDto> getAllTopics() {
 		return topicRepository.findAll().stream()
-				.map(topicDtoMapper::map)
+				.map(Topic::toDto)
 				.collect(Collectors.toList());
 	}
 
 	public TopicDto getTopicById(Long id) {
 		return topicRepository.findById(id)
-				.map(topicDtoMapper::map)
+				.map(Topic::toDto)
 				.orElseThrow(() -> new EntityNotFoundException("Topic not found with id: " + id));
 	}
-//transactional?
+
 	public TopicDto createTopic(TopicDto topicDto) {
-		Topic topic = topicMapper.map(topicDto);//use separate lib for mappings
-		Topic savedTopic = topicRepository.save(topic);
-		return topicDtoMapper.map(savedTopic);
+		School school = findSchoolById(topicDto.schoolId());
+		Topic topic = topicDto.toTopic(school);
+		return topicRepository.save(topic).toDto();
 	}
 
 	public void deleteTopic(Long id) {
@@ -50,30 +44,36 @@ public class TopicService implements EntityValidator<Topic, TopicDto> {
 		topicRepository.delete(topic);
 	}
 
-	@Override
-	public Topic entityValidator(Long id, TopicDto dto) {// ban
-		Topic topic = topicRepository.findById(id)
+
+	public void updateTopicSchoolById(Long id, Long schoolId) {
+		Topic topic = findTopicById(id);
+		School school = findSchoolById(schoolId);
+		topic.setSchool(school);
+		topicRepository.save(topic);
+	}
+
+	public void updateTopicNameById(Long id, String name) {
+		Topic topic = findTopicById(id);
+		validateTopicName(name);
+		topic.setName(name);
+		topicRepository.save(topic);
+	}
+
+	private School findSchoolById(Long id) {
+		return schoolRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + id));
+	}
+
+	private Topic findTopicById(Long id) {
+		return topicRepository.findById(id)
 				.orElseThrow(() -> new EntityNotFoundException("Topic not found with id: " + id));
+	}
 
-		if (topic.getName().equals(dto.name())) {
-			throw new EntityAlreadyRelatedException(
-					"The Topic name '" + dto.name() + "' is already in use by another Topic.");
-		}
-
-		topic.setName(dto.name());// we need separate endpoint for updating name
-
-		if (topic.getSchool() == null || !topic.getSchool().getId().equals(dto.schoolId())) {
-			School school = schoolRepository.findById(dto.schoolId())
-					.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + dto.schoolId()));
-
-//			Optional<Topic> optionalTopicBySchoolId = topicRepository.findBySchoolId(dto.schoolId());
-//
-//			if (optionalTopicBySchoolId.isPresent() && !optionalTopicBySchoolId.get().getId().equals(id)) {
-//				throw new EntityAlreadyRelatedException(
-//						"The administrator with this ID " + dto.schoolId() + " belongs to another school.");
-//			}
-//			topic.setSchool(school);// we need separate endpoint for updating school
-		}
-		return topic;
+	private void validateTopicName(String name) {
+		topicRepository.findTopicByName(name)
+				.ifPresent(s -> {
+					throw new EntityAlreadyRelatedException(
+							"The Topic with this name " + name + " belongs to another Topic.");
+				});
 	}
 }

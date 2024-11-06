@@ -1,6 +1,7 @@
 package com.mmdev.dictionaryy.entity.topics;
 
 import com.mmdev.dictionaryy.entity.school.School;
+import com.mmdev.dictionaryy.model.topic.TopicDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -35,4 +36,11 @@ public class Topic {
 	@JoinColumn(name = "school_id")
 	private School school;
 
+	public TopicDto toDto(){
+		return TopicDto.builder()
+				.id(id)
+				.name(name)
+				.schoolId(school.getId())
+				.build();
+	}
 }

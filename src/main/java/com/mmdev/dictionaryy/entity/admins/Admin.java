@@ -1,8 +1,8 @@
 package com.mmdev.dictionaryy.entity.admins;
 
 import com.mmdev.dictionaryy.entity.school.School;
+import com.mmdev.dictionaryy.model.admin.AdminDto;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
@@ -45,4 +45,14 @@ public class Admin {
 	private String email;
 
 	private String password;
+
+	public AdminDto toDto(){
+		return AdminDto.builder()
+				.id(id)
+				.name(name)
+				.email(email)
+				.password(password)
+				.build();
+	}
+
 }

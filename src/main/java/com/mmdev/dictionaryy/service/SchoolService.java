@@ -5,8 +5,7 @@ import com.mmdev.dictionaryy.entity.school.School;
 import com.mmdev.dictionaryy.entity.topics.Topic;
 import com.mmdev.dictionaryy.exception.EntityAlreadyRelatedException;
 import com.mmdev.dictionaryy.exception.EntityNotFoundException;
-import com.mmdev.dictionaryy.model.AdminDto;
-import com.mmdev.dictionaryy.model.SchoolDto;
+import com.mmdev.dictionaryy.model.school.SchoolDto;
 import com.mmdev.dictionaryy.repository.AdminRepository;
 import com.mmdev.dictionaryy.repository.SchoolRepository;
 import com.mmdev.dictionaryy.repository.TopicRepository;
@@ -39,8 +38,12 @@ public class SchoolService {
 	}
 
 	public void createSchool(SchoolDto schoolDto) {
-		Admin admin = adminRepository.findById(schoolDto.adminId())
-				.orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + schoolDto.adminId()));
+		Admin admin = findAdminById(schoolDto.adminId());
+
+		if (schoolRepository.existsByAdminId(schoolDto.adminId())) {
+			throw new EntityAlreadyRelatedException(
+					"The administrator with this ID " + schoolDto.adminId() + " belongs to another school.");
+		}
 		List<Topic> topics = topicRepository.findBySchoolId(schoolDto.id());
 		schoolRepository.save(schoolDto.toSchool(admin, topics));
 	}
@@ -52,19 +55,15 @@ public class SchoolService {
 		schoolRepository.save(school);
 	}
 
-	public void updateSchoolAdminById(Long id, AdminDto adminDto) {
-		School school = findSchoolById(id);
-
-		if (needsAdminUpdate(school, adminDto)) {
-			Admin admin = findAdminById(adminDto.id());
-			validateAdminDoesNotBelongToAnotherSchool(adminDto.id(), id);
-			school.setAdmin(admin);
-		}
+	public void updateSchoolAdminById(Long schoolId, Long adminId) {
+		School school = findSchoolById(schoolId);
+		Admin admin = findAdminById(adminId);
+		validateAdminDoesNotBelongToAnotherSchool(adminId, schoolId);
+		school.setAdmin(admin);
 	}
 
 	public void deleteSchool(Long id) {
-		schoolRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + id));
+		findSchoolById(id);
 		schoolRepository.deleteById(id);
 	}
 
@@ -80,10 +79,6 @@ public class SchoolService {
 			throw new EntityAlreadyRelatedException(
 					"The administrator with this ID " + adminId + " belongs to another school.");
 		}
-	}
-
-	private boolean needsAdminUpdate(School school, AdminDto adminDto) {
-		return school.getAdmin() == null || !school.getAdmin().getId().equals(adminDto.id());
 	}
 
 	private School findSchoolById(Long id) {

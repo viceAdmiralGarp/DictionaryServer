@@ -1,32 +1,27 @@
-package com.mmdev.dictionaryy.model;
+package com.mmdev.dictionaryy.model.topic;
 
-import java.util.List;
-
-import com.mmdev.dictionaryy.entity.admins.Admin;
 import com.mmdev.dictionaryy.entity.school.School;
 import com.mmdev.dictionaryy.entity.topics.Topic;
-
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
 @Builder
-public record SchoolDto(
+public record TopicDto(
+
 		Long id,
 
 		@NotNull
-		@Size(max = 256)
+		@Size(max=256)
 		String name,
 
 		@NotNull
-		Long adminId
+		Long schoolId
 ) {
-
-	public School toSchool(Admin admin, List<Topic> topics) {
-		return School.builder()
+	public Topic toTopic(School school){
+		return Topic.builder()
 				.name(name)
-				.admin(admin)
-				.topics(topics)
+				.school(school)
 				.build();
 	}
 }

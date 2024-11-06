@@ -1,13 +1,15 @@
 package com.mmdev.dictionaryy.controller;
 
-import com.mmdev.dictionaryy.model.AdminDto;
+import com.mmdev.dictionaryy.model.admin.AdminDto;
+import com.mmdev.dictionaryy.model.admin.UpdateAdminEmailDto;
+import com.mmdev.dictionaryy.model.admin.UpdateAdminNameDto;
+import com.mmdev.dictionaryy.model.admin.UpdateAdminPasswordDto;
 import com.mmdev.dictionaryy.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,18 +18,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admins")
 @RequiredArgsConstructor
-public class AdminController{
+public class AdminController {
 
 	private final AdminService adminService;
 
 	@GetMapping
-	public List<AdminDto> getAllAdmins() {
-		return adminService.getAllAdmins();
+	public ResponseEntity<List<AdminDto>> getAllAdmins() {
+		List<AdminDto> allAdmins = adminService.getAllAdmins();
+		return ResponseEntity.ok(allAdmins);
 	}
 
 	@GetMapping("/{id}")
@@ -42,12 +44,26 @@ public class AdminController{
 		return ResponseEntity.ok(admin);
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<AdminDto> updateAdmin(
+	@PutMapping("/{id}/name")
+	public void updateAdminByName(
 			@PathVariable Long id,
-			@RequestBody @Validated AdminDto adminDto) {
-		AdminDto updatedAdmin = adminService.updateAdminById(id, adminDto);
-		return ResponseEntity.ok(updatedAdmin);
+			@RequestBody @Validated UpdateAdminNameDto adminDto) {
+		adminService.updateAdminByName(id, adminDto.name());
+	}
+
+
+	@PutMapping("/{id}/email")
+	public void updateAdminByEmail(
+			@PathVariable Long id,
+			@RequestBody @Validated UpdateAdminEmailDto adminDto) {
+		adminService.updateAdminByEmail(id, adminDto.email());
+	}
+
+	@PutMapping("/{id}/password")
+	public void updateAdminByPassword(
+			@PathVariable Long id,
+			@RequestBody @Validated UpdateAdminPasswordDto adminDto) {
+		adminService.updateAdminByPassword(id, adminDto.password());
 	}
 
 	@DeleteMapping("/{id}")

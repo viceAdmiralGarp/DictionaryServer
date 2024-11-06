@@ -1,17 +1,14 @@
 package com.mmdev.dictionaryy.service;
 
 import com.mmdev.dictionaryy.entity.admins.Admin;
+import com.mmdev.dictionaryy.exception.EntityAlreadyRelatedException;
 import com.mmdev.dictionaryy.exception.EntityNotFoundException;
-import com.mmdev.dictionaryy.mapper.admin.AdminDtoMapper;
-import com.mmdev.dictionaryy.mapper.admin.AdminMapper;
-import com.mmdev.dictionaryy.model.AdminDto;
+import com.mmdev.dictionaryy.model.admin.AdminDto;
 import com.mmdev.dictionaryy.repository.AdminRepository;
-import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,47 +16,59 @@ import java.util.stream.Collectors;
 public class AdminService {
 
 	private final AdminRepository adminRepository;
-	private final AdminDtoMapper adminDtoMapper;
-	private final AdminMapper adminMapper;
 
 	public List<AdminDto> getAllAdmins() {
 		return adminRepository.findAll()
 				.stream()
-				.map(adminDtoMapper::map)
+				.map(Admin::toDto)
 				.collect(Collectors.toList());
 	}
 
 	public AdminDto getAdminById(Long id) {
 		return adminRepository.findById(id)
-				.map(adminDtoMapper::map)
+				.map(Admin::toDto)
 				.orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));
 	}
 
 	public AdminDto createAdmin(AdminDto adminDto) {
-		Admin admin = adminMapper.map(adminDto);
+		Admin admin = adminDto.toAdmin();
+		adminExistsByEmail(adminDto.email());
 		Admin savedAdmin = adminRepository.save(admin);
-		return adminDtoMapper.map(savedAdmin);
+		return savedAdmin.toDto();
 	}
 
-	public AdminDto updateAdminById(Long id, AdminDto adminDto) {
-		Admin admin = adminRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));
+	public void updateAdminByName(Long id, String name) {
+		Admin admin = findAdminById(id);
+		admin.setName(name);
+		adminRepository.save(admin);
+	}
 
-		if (!admin.getEmail().equals(adminDto.email()) && adminRepository.existsByEmail(adminDto.email())) {
-			throw new EntityExistsException("Email is already in use by another admin.");
-		}
+	public void updateAdminByEmail(Long id, String email) {
+		Admin admin = findAdminById(id);
+		adminExistsByEmail(email);
+		admin.setEmail(email);
+		adminRepository.save(admin);
+	}
 
-		admin.setName(adminDto.name());
-		admin.setEmail(adminDto.email());
-		admin.setPassword(adminDto.password());
-
-		Admin savedAdmin = adminRepository.save(admin);
-		return adminDtoMapper.map(savedAdmin);
+	public void updateAdminByPassword(Long id, String password) {
+		Admin admin = findAdminById(id);
+		admin.setPassword(password);
+		adminRepository.save(admin);
 	}
 
 	public void deleteAdminById(Long id) {
-		adminRepository.findById(id).
+		Admin admin = findAdminById(id);
+		adminRepository.deleteById(admin.getId());
+	}
+
+	private Admin findAdminById(Long id) {
+		return adminRepository.findById(id).
 				orElseThrow(() -> new EntityNotFoundException("Admin not found with id: " + id));
-		adminRepository.deleteById(id);
+	}
+
+	private void adminExistsByEmail(String email) {
+		if (adminRepository.existsByEmail(email)) {
+			throw new EntityAlreadyRelatedException("Email is already in use by another admin.");
+		}
 	}
 }

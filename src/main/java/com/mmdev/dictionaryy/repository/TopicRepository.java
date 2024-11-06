@@ -12,5 +12,7 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
 	Optional<Topic> findFirstBySchoolId(Long schoolId);
 
 	List<Topic> findBySchoolId(Long schoolId);
+
+	Optional<Object> findTopicByName(String name);
 }
 

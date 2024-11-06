@@ -1,5 +1,6 @@
-package com.mmdev.dictionaryy.model;
+package com.mmdev.dictionaryy.model.admin;
 
+import com.mmdev.dictionaryy.entity.admins.Admin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -20,4 +21,13 @@ public record AdminDto(
 		@NotNull
 		@Size(max = 128)
 		String password
-) {}
+) {
+
+	public Admin toAdmin(){
+		return Admin.builder()
+				.name(name)
+				.email(email)
+				.password(password)
+				.build();
+	}
+}
