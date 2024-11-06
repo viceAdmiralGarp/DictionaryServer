@@ -1,8 +1,7 @@
 package com.mmdev.dictionaryy.service;
 
+
 import com.mmdev.dictionaryy.entity.admins.Admin;
-import com.mmdev.dictionaryy.mapper.admin.AdminDtoMapper;
-import com.mmdev.dictionaryy.mapper.admin.AdminMapper;
 import com.mmdev.dictionaryy.model.admin.AdminDto;
 import com.mmdev.dictionaryy.repository.AdminRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,13 +15,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 @ExtendWith(MockitoExtension.class)
 class AdminServiceTest {
@@ -33,10 +27,6 @@ class AdminServiceTest {
 
 	@Mock
 	private AdminRepository adminRepository;
-	@Mock
-	private AdminDtoMapper adminDtoMapper;
-	@Mock
-	private AdminMapper adminMapper;
 	@InjectMocks
 	private AdminService adminService;
 
@@ -63,7 +53,6 @@ class AdminServiceTest {
 		List<AdminDto> adminDtos = Collections.singletonList(adminDto);
 
 		doReturn(admins).when(adminRepository).findAll();
-		doReturn(adminDto).when(adminDtoMapper).map(admin);
 
 		List<AdminDto> actualResult = adminService.getAllAdmins();
 
@@ -71,8 +60,7 @@ class AdminServiceTest {
 		assertEquals(adminDtos, actualResult);
 
 		verify(adminRepository).findAll();
-		verify(adminDtoMapper).map(admin);
-		verifyNoMoreInteractions(adminDtoMapper, adminRepository);
+
 	}
 
 	@Test
