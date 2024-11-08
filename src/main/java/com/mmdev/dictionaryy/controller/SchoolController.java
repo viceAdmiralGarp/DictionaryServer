@@ -41,7 +41,7 @@ public class SchoolController {
 		schoolService.createSchool(schoolDto);
 	}
 
-	@PutMapping("/{id}/school")
+	@PutMapping("/{id}/name")
 	public void updateSchoolNameById(@PathVariable Long id, @RequestBody UpdateSchoolNameDto schoolAdmin) {
 		schoolService.updateSchoolNameId(id, schoolAdmin.name());
 

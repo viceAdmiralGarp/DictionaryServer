@@ -1,9 +1,8 @@
 package com.mmdev.dictionaryy.controller;
 
-import com.mmdev.dictionaryy.model.school.SchoolDto;
-import com.mmdev.dictionaryy.model.topic.TopicDto;
-import com.mmdev.dictionaryy.model.topic.UpdateTopicNameDto;
-import com.mmdev.dictionaryy.model.topic.UpdateTopicSchoolByIdDto;
+import com.mmdev.dictionaryy.model.topics.topic.TopicDto;
+import com.mmdev.dictionaryy.model.topics.topic.UpdateTopicNameDto;
+import com.mmdev.dictionaryy.model.topics.topic.UpdateTopicSchoolByIdDto;
 import com.mmdev.dictionaryy.service.TopicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +43,7 @@ public class TopicController {
 		return ResponseEntity.ok(topic);
 	}
 
-	@PutMapping("/{id}/topic")
+	@PutMapping("/{id}/name")
 	public void updateTopicNameById(@PathVariable Long id, @RequestBody UpdateTopicNameDto topicDto) {
 		topicService.updateTopicNameById(id, topicDto.name());
 	}

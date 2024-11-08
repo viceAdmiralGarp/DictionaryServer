@@ -41,7 +41,6 @@ public class EngWord {
 	@ManyToMany(mappedBy = "engWords")
 	private List<SubTopic> subTopics = new ArrayList<>();
 
-
 	@Builder.Default
 	@ManyToMany(mappedBy = "engWords")
 	private List<Student> students = new ArrayList<>();

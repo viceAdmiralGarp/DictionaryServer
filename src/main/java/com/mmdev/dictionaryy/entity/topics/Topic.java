@@ -1,7 +1,7 @@
 package com.mmdev.dictionaryy.entity.topics;
 
 import com.mmdev.dictionaryy.entity.school.School;
-import com.mmdev.dictionaryy.model.topic.TopicDto;
+import com.mmdev.dictionaryy.model.topics.topic.TopicDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

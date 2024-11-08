@@ -1,4 +1,4 @@
-package com.mmdev.dictionaryy.model.topic;
+package com.mmdev.dictionaryy.model.topics.topic;
 
 import com.mmdev.dictionaryy.entity.school.School;
 import com.mmdev.dictionaryy.entity.topics.Topic;

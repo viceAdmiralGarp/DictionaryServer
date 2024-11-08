@@ -2,6 +2,7 @@ package com.mmdev.dictionaryy.entity.topics;
 
 import com.mmdev.dictionaryy.entity.words.EngWord;
 import com.mmdev.dictionaryy.entity.words.NativeWord;
+import com.mmdev.dictionaryy.model.topics.subtopic.SubTopicDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -68,6 +69,14 @@ public class SubTopic {
 	public void addNativeWord(NativeWord word){
 		nativeWords.add(word);
 		word.getSubTopics().add(this);
+	}
+
+	public SubTopicDto toDto(){
+		return SubTopicDto.builder()
+				.id(id)
+				.name(name)
+				.topicId(topic.getId())
+				.build();
 	}
 }
 

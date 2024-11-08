@@ -4,7 +4,7 @@ import com.mmdev.dictionaryy.entity.school.School;
 import com.mmdev.dictionaryy.entity.topics.Topic;
 import com.mmdev.dictionaryy.exception.EntityAlreadyRelatedException;
 import com.mmdev.dictionaryy.exception.EntityNotFoundException;
-import com.mmdev.dictionaryy.model.topic.TopicDto;
+import com.mmdev.dictionaryy.model.topics.topic.TopicDto;
 import com.mmdev.dictionaryy.repository.SchoolRepository;
 import com.mmdev.dictionaryy.repository.TopicRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,11 +39,9 @@ public class TopicService {
 	}
 
 	public void deleteTopic(Long id) {
-		Topic topic = topicRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("Topic not found with id: " + id));
+		Topic topic = findTopicById(id);
 		topicRepository.delete(topic);
 	}
-
 
 	public void updateTopicSchoolById(Long id, Long schoolId) {
 		Topic topic = findTopicById(id);
