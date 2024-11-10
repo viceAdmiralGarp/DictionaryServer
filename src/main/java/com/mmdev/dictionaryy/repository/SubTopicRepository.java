@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface SubTopicRepository extends JpaRepository<SubTopic, Long> {
-	Optional<Object> findTopicByName(String name);
+	Optional<Object> findTopicByName(String name);//TODO Object?, rewrite to existsByAdminId
 }

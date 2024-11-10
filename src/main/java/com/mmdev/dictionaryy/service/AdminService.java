@@ -21,7 +21,7 @@ public class AdminService {
 		return adminRepository.findAll()
 				.stream()
 				.map(Admin::toDto)
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	public AdminDto getAdminById(Long id) {
@@ -32,12 +32,12 @@ public class AdminService {
 
 	public AdminDto createAdmin(AdminDto adminDto) {
 		Admin admin = adminDto.toAdmin();
-		adminExistsByEmail(adminDto.email());
+		adminExistsByEmail(adminDto.email());//TODO rename to more meaningful, e. g. validate
 		Admin savedAdmin = adminRepository.save(admin);
 		return savedAdmin.toDto();
 	}
 
-	public void updateAdminByName(Long id, String name) {
+	public void updateAdminByName(Long id, String name) {//TODO rename updateAdminNameById
 		Admin admin = findAdminById(id);
 		admin.setName(name);
 		adminRepository.save(admin);

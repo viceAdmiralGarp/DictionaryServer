@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TopicService {
 
-	private final TopicRepository topicRepository;
+	private final TopicRepository topicRepository;//TODO use service layer
 	private final SchoolRepository schoolRepository;
 
 	public List<TopicDto> getAllTopics() {

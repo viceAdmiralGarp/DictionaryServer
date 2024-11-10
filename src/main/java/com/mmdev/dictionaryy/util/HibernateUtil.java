@@ -9,7 +9,7 @@ import org.hibernate.cfg.Configuration;
  * Also I wanted to remember how to work with clear hibernate
  */
 
-public  class HibernateUtil {//move in test package
+public  class HibernateUtil {//TODO move in test package
 
 	public static SessionFactory getSessionFactory() {
 		Configuration configuration = new Configuration();

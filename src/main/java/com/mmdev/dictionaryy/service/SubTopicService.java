@@ -23,10 +23,10 @@ public class SubTopicService {
 	public List<SubTopicDto> getAllSubTopic() {
 		return subTopicRepository.findAll().stream()
 				.map(SubTopic::toDto)
-				.collect(Collectors.toList());
+				.collect(Collectors.toList());//TODO toList()
 	}
 
-	public SubTopicDto getSubTopicById(Long id) {
+	public SubTopicDto getSubTopicById(Long id) {//TODO get and find name convention
 		return subTopicRepository.findById(id)
 				.map(SubTopic::toDto)
 				.orElseThrow(() -> new EntityNotFoundException("SubTopic not found with id: " + id));
@@ -58,7 +58,7 @@ public class SubTopicService {
 	}
 
 	private void validateSubTopicName(String name) {
-		subTopicRepository.findTopicByName(name)
+		subTopicRepository.findTopicByName(name)//TODO existence
 				.ifPresent(s -> {
 					throw new EntityAlreadyRelatedException(
 							"The SubTopic with this name " + name + " belongs to another SubTopic.");

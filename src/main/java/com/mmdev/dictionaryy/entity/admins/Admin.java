@@ -38,7 +38,7 @@ public class Admin {
 
 	@OneToOne(mappedBy = "admin",
 			cascade = ALL,
-			fetch = LAZY,
+			fetch = LAZY,//TODO by default eager
 			optional = false)
 	private School school;
 

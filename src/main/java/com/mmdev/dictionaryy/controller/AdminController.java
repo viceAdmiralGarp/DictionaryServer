@@ -55,7 +55,7 @@ public class AdminController {
 	@PutMapping("/{id}/email")
 	public void updateAdminByEmail(
 			@PathVariable Long id,
-			@RequestBody @Validated UpdateAdminEmailDto adminDto) {
+			@RequestBody @Validated UpdateAdminEmailDto adminDto) {//TODO Use string instead of object
 		adminService.updateAdminByEmail(id, adminDto.email());
 	}
 

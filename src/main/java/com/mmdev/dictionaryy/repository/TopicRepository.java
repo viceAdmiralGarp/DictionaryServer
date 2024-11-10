@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface TopicRepository extends JpaRepository<Topic, Long> {
-	Optional<Topic> findFirstBySchoolId(Long schoolId);
+	Optional<Topic> findFirstBySchoolId(Long schoolId);//TODO not used
 
 	List<Topic> findBySchoolId(Long schoolId);
 

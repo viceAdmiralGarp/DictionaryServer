@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class ExceptionsControllerManager {//ebat` name
+public class ExceptionsControllerManager {//TODO ebat` name
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	@ExceptionHandler({EntityNotFoundException.class})
 	public String handleEntityNotFound(EntityNotFoundException e) {
