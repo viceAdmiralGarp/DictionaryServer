@@ -5,14 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface TopicRepository extends JpaRepository<Topic, Long> {
-	Optional<Topic> findFirstBySchoolId(Long schoolId);//TODO not used
 
-	List<Topic> findBySchoolId(Long schoolId);
+	List<Topic> findTopicsBySchoolId(Long schoolId);
 
-	Optional<Object> findTopicByName(String name);
+	Boolean existsTopicByName(String name);
 }
 

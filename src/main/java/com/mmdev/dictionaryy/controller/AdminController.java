@@ -1,9 +1,7 @@
 package com.mmdev.dictionaryy.controller;
 
+import com.mmdev.dictionaryy.entity.admins.Admin;
 import com.mmdev.dictionaryy.model.admin.AdminDto;
-import com.mmdev.dictionaryy.model.admin.UpdateAdminEmailDto;
-import com.mmdev.dictionaryy.model.admin.UpdateAdminNameDto;
-import com.mmdev.dictionaryy.model.admin.UpdateAdminPasswordDto;
 import com.mmdev.dictionaryy.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +26,16 @@ public class AdminController {
 
 	@GetMapping
 	public ResponseEntity<List<AdminDto>> getAllAdmins() {
-		List<AdminDto> allAdmins = adminService.getAllAdmins();
+		List<AdminDto> allAdmins = adminService.getAllAdmins()
+				.stream()
+				.map(Admin::toDto)
+				.toList();
 		return ResponseEntity.ok(allAdmins);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<AdminDto> getAdminById(@PathVariable Long id) {
-		AdminDto admin = adminService.getAdminById(id);
+	public ResponseEntity<AdminDto> findAdminById(@PathVariable Long id) {
+		AdminDto admin = adminService.findAdminById(id).toDto();
 		return ResponseEntity.ok(admin);
 	}
 
@@ -47,23 +48,23 @@ public class AdminController {
 	@PutMapping("/{id}/name")
 	public void updateAdminByName(
 			@PathVariable Long id,
-			@RequestBody @Validated UpdateAdminNameDto adminDto) {
-		adminService.updateAdminByName(id, adminDto.name());
+			@RequestBody String name) {
+		adminService.updateAdminNameById(id, name);
 	}
 
 
 	@PutMapping("/{id}/email")
 	public void updateAdminByEmail(
 			@PathVariable Long id,
-			@RequestBody @Validated UpdateAdminEmailDto adminDto) {//TODO Use string instead of object
-		adminService.updateAdminByEmail(id, adminDto.email());
+			@RequestBody String email) {
+		adminService.updateAdminEmailById(id, email);
 	}
 
 	@PutMapping("/{id}/password")
 	public void updateAdminByPassword(
 			@PathVariable Long id,
-			@RequestBody @Validated UpdateAdminPasswordDto adminDto) {
-		adminService.updateAdminByPassword(id, adminDto.password());
+			@RequestBody String password) {
+		adminService.updateAdminPasswordById(id, password);
 	}
 
 	@DeleteMapping("/{id}")

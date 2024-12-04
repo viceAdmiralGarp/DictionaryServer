@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface SchoolRepository extends JpaRepository<School, Long> {
 	Optional<School> findByAdminId(Long adminId);
 
-	Optional<School> findSchoolByName(String name);
+	Boolean existsSchoolByName(String name);
 
 	Boolean existsByAdminId(Long adminId);
 }

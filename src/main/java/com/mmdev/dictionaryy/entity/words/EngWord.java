@@ -2,6 +2,7 @@ package com.mmdev.dictionaryy.entity.words;
 
 import com.mmdev.dictionaryy.entity.student.Student;
 import com.mmdev.dictionaryy.entity.topics.SubTopic;
+import com.mmdev.dictionaryy.model.words.EngWordDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -44,4 +45,10 @@ public class EngWord {
 	@Builder.Default
 	@ManyToMany(mappedBy = "engWords")
 	private List<Student> students = new ArrayList<>();
+
+	public EngWordDto toDto(){
+		return EngWordDto.builder()
+				.name(name)
+				.build();
+	}
 }

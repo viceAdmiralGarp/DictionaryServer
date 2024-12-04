@@ -5,73 +5,68 @@ import com.mmdev.dictionaryy.entity.topics.Topic;
 import com.mmdev.dictionaryy.exception.EntityAlreadyRelatedException;
 import com.mmdev.dictionaryy.exception.EntityNotFoundException;
 import com.mmdev.dictionaryy.model.topics.topic.TopicDto;
-import com.mmdev.dictionaryy.repository.SchoolRepository;
 import com.mmdev.dictionaryy.repository.TopicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class TopicService {
 
-	private final TopicRepository topicRepository;//TODO use service layer
-	private final SchoolRepository schoolRepository;
+	private final TopicRepository topicRepository;
+	private final SchoolService schoolService;
 
-	public List<TopicDto> getAllTopics() {
-		return topicRepository.findAll().stream()
-				.map(Topic::toDto)
-				.collect(Collectors.toList());
+	public List<Topic> getAllTopics() {
+		return topicRepository.findAll()
+				.stream()
+				.toList();
 	}
 
-	public TopicDto getTopicById(Long id) {
+	public Topic findTopicById(Long id) {
 		return topicRepository.findById(id)
-				.map(Topic::toDto)
 				.orElseThrow(() -> new EntityNotFoundException("Topic not found with id: " + id));
 	}
 
+	@Transactional
 	public TopicDto createTopic(TopicDto topicDto) {
-		School school = findSchoolById(topicDto.schoolId());
+		validateTopicName(topicDto.name());
+		School school = schoolService.findSchoolById(topicDto.schoolId());
 		Topic topic = topicDto.toTopic(school);
-		return topicRepository.save(topic).toDto();
+		topicRepository.save(topic);
+		return topic.toDto();
 	}
 
+	@Transactional
 	public void deleteTopic(Long id) {
 		Topic topic = findTopicById(id);
 		topicRepository.delete(topic);
 	}
 
-	public void updateTopicSchoolById(Long id, Long schoolId) {
-		Topic topic = findTopicById(id);
-		School school = findSchoolById(schoolId);
-		topic.setSchool(school);
-		topicRepository.save(topic);
-	}
-
+	@Transactional
 	public void updateTopicNameById(Long id, String name) {
 		Topic topic = findTopicById(id);
 		validateTopicName(name);
 		topic.setName(name);
-		topicRepository.save(topic);
 	}
 
-	private School findSchoolById(Long id) {
-		return schoolRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("School not found with id: " + id));
+	@Transactional
+	public void updateTopicSchoolById(Long id, Long schoolId) {
+		Topic topic = findTopicById(id);
+		School school = schoolService.findSchoolById(schoolId);
+		topic.setSchool(school);
 	}
 
-	private Topic findTopicById(Long id) {
-		return topicRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException("Topic not found with id: " + id));
+	public List<Topic> findTopicsBySchoolId(Long schoolId){
+		return topicRepository.findTopicsBySchoolId(schoolId);
 	}
 
-	private void validateTopicName(String name) {
-		topicRepository.findTopicByName(name)
-				.ifPresent(s -> {
-					throw new EntityAlreadyRelatedException(
-							"The Topic with this name " + name + " belongs to another Topic.");
-				});
+	public void validateTopicName(String name) {
+		if (topicRepository.existsTopicByName(name)) {
+			throw new EntityAlreadyRelatedException(
+					"The Topic with this name " + name + " belongs to another Topic.");
+		}
 	}
 }

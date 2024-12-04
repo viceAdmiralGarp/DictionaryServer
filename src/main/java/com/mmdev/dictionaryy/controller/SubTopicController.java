@@ -1,9 +1,9 @@
 package com.mmdev.dictionaryy.controller;
 
+import com.mmdev.dictionaryy.entity.topics.SubTopic;
 import com.mmdev.dictionaryy.model.topics.subtopic.SubTopicDto;
-import com.mmdev.dictionaryy.model.topics.subtopic.UpdateSubTopicNameDto;
-import com.mmdev.dictionaryy.model.topics.subtopic.UpdateSubTopicSchoolByIdDto;
 import com.mmdev.dictionaryy.service.SubTopicService;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,14 +27,17 @@ public class SubTopicController {
 
 	@GetMapping
 	public ResponseEntity<List<SubTopicDto>> getAllTopics() {
-		List<SubTopicDto> allSubTopics = subTopicService.getAllSubTopic();
+		List<SubTopicDto> allSubTopics = subTopicService.getAllSubTopic()
+				.stream()
+				.map(SubTopic::toDto)
+				.toList();
 		return ResponseEntity.ok(allSubTopics);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<SubTopicDto> getTopicById(@PathVariable Long id) {
-		SubTopicDto topic = subTopicService.getSubTopicById(id);
-		return ResponseEntity.ok(topic);
+	public ResponseEntity<SubTopicDto> findTopicById(@PathVariable Long id) {
+		SubTopicDto subTopicDto = subTopicService.findSubTopicById(id).toDto();
+		return ResponseEntity.ok(subTopicDto);
 	}
 
 	@PostMapping
@@ -44,13 +47,13 @@ public class SubTopicController {
 	}
 
 	@PutMapping("/{id}/name")
-	public void updateTopicNameById(@PathVariable Long id, @RequestBody UpdateSubTopicNameDto subTopicDto) {
-		subTopicService.updateSubTopicNameById(id, subTopicDto.name());
+	public void updateTopicNameById(@PathVariable Long id, @RequestBody @NotNull String name) {
+		subTopicService.updateSubTopicNameById(id, name);
 	}
 
 	@PutMapping("/{id}/topic")
-	public void updateTopicSchoolById(@PathVariable Long id, @RequestBody UpdateSubTopicSchoolByIdDto subTopicDto) {
-		subTopicService.updateSubTopicByTopicId(id, subTopicDto.topicId());
+	public void updateTopicSchoolById(@PathVariable Long id, @RequestBody @NotNull Long topicId) {
+		subTopicService.updateSubTopicByTopicId(id, topicId);
 	}
 
 	@DeleteMapping("/{id}")
@@ -58,5 +61,4 @@ public class SubTopicController {
 		subTopicService.deleteSubTopic(id);
 		return ResponseEntity.ok().build();
 	}
-
 }
