@@ -48,6 +48,7 @@ public class NativeWord {
 
 	public NativeWordDto toDto(){
 		return NativeWordDto.builder()
+				.id(id)
 				.name(name)
 				.build();
 	}

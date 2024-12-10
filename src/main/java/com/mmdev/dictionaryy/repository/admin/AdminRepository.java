@@ -1,4 +1,4 @@
-package com.mmdev.dictionaryy.repository;
+package com.mmdev.dictionaryy.repository.admin;
 
 import com.mmdev.dictionaryy.entity.admins.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;

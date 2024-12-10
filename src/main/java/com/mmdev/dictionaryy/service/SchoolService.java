@@ -2,11 +2,10 @@ package com.mmdev.dictionaryy.service;
 
 import com.mmdev.dictionaryy.entity.admins.Admin;
 import com.mmdev.dictionaryy.entity.school.School;
-import com.mmdev.dictionaryy.entity.topics.Topic;
 import com.mmdev.dictionaryy.exception.EntityAlreadyRelatedException;
 import com.mmdev.dictionaryy.exception.EntityNotFoundException;
 import com.mmdev.dictionaryy.model.school.SchoolDto;
-import com.mmdev.dictionaryy.repository.SchoolRepository;
+import com.mmdev.dictionaryy.repository.school.SchoolRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ public class SchoolService {
 
 	private final SchoolRepository schoolRepository;
 	private final AdminService adminService;
-	private final TopicService topicService;
 
 	public List<School> getAllSchools() {
 		return schoolRepository.findAll()
@@ -38,8 +36,7 @@ public class SchoolService {
 	public void createSchool(SchoolDto schoolDto) {
 		Admin admin = adminService.findAdminById(schoolDto.adminId());
 		schoolExistsByAdminId(schoolDto);
-		List<Topic> topics = topicService.findTopicsBySchoolId(schoolDto.id());
-		School school = schoolDto.toSchool(admin, topics);
+		School school = schoolDto.toSchool(admin);
 		schoolRepository.save(school);
 	}
 

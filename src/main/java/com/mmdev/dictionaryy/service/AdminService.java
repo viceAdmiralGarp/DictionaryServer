@@ -4,7 +4,7 @@ import com.mmdev.dictionaryy.entity.admins.Admin;
 import com.mmdev.dictionaryy.exception.EntityAlreadyRelatedException;
 import com.mmdev.dictionaryy.exception.EntityNotFoundException;
 import com.mmdev.dictionaryy.model.admin.AdminDto;
-import com.mmdev.dictionaryy.repository.AdminRepository;
+import com.mmdev.dictionaryy.repository.admin.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

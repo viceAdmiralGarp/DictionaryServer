@@ -1,4 +1,4 @@
-package com.mmdev.dictionaryy.controller;
+package com.mmdev.dictionaryy.controller.topics;
 
 import com.mmdev.dictionaryy.entity.topics.Topic;
 import com.mmdev.dictionaryy.model.topics.topic.TopicDto;

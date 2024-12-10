@@ -1,4 +1,4 @@
-package com.mmdev.dictionaryy.repository;
+package com.mmdev.dictionaryy.repository.words;
 
 import com.mmdev.dictionaryy.entity.words.NativeWord;
 import org.springframework.data.jpa.repository.JpaRepository;

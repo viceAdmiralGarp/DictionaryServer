@@ -1,4 +1,4 @@
-package com.mmdev.dictionaryy.repository;
+package com.mmdev.dictionaryy.repository.topics;
 
 import com.mmdev.dictionaryy.entity.topics.Topic;
 import org.springframework.data.jpa.repository.JpaRepository;

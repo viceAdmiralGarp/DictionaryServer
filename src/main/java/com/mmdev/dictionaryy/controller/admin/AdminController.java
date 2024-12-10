@@ -1,4 +1,4 @@
-package com.mmdev.dictionaryy.controller;
+package com.mmdev.dictionaryy.controller.admin;
 
 import com.mmdev.dictionaryy.entity.admins.Admin;
 import com.mmdev.dictionaryy.model.admin.AdminDto;
@@ -72,6 +72,4 @@ public class AdminController {
 		adminService.deleteAdminById(id);
 		return ResponseEntity.ok().build();
 	}
-
-
 }

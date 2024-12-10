@@ -2,7 +2,7 @@ package com.mmdev.dictionaryy.entity.admins;
 
 import com.mmdev.dictionaryy.entity.school.School;
 import com.mmdev.dictionaryy.entity.topics.Topic;
-import com.mmdev.dictionaryy.repository.AdminRepository;
+import com.mmdev.dictionaryy.repository.admin.AdminRepository;
 import com.mmdev.dictionaryy.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -12,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 public class AdminTest {// real DB?

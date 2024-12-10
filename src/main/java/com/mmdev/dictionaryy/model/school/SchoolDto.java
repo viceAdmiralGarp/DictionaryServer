@@ -1,10 +1,7 @@
 package com.mmdev.dictionaryy.model.school;
 
-import java.util.List;
-
 import com.mmdev.dictionaryy.entity.admins.Admin;
 import com.mmdev.dictionaryy.entity.school.School;
-import com.mmdev.dictionaryy.entity.topics.Topic;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -22,11 +19,10 @@ public record SchoolDto(
 		Long adminId
 ) {
 
-	public School toSchool(Admin admin, List<Topic> topics) {
+	public School toSchool(Admin admin) {
 		return School.builder()
 				.name(name)
 				.admin(admin)
-				.topics(topics)
 				.build();
 	}
 }

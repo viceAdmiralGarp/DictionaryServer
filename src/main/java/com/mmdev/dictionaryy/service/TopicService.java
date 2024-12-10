@@ -5,7 +5,7 @@ import com.mmdev.dictionaryy.entity.topics.Topic;
 import com.mmdev.dictionaryy.exception.EntityAlreadyRelatedException;
 import com.mmdev.dictionaryy.exception.EntityNotFoundException;
 import com.mmdev.dictionaryy.model.topics.topic.TopicDto;
-import com.mmdev.dictionaryy.repository.TopicRepository;
+import com.mmdev.dictionaryy.repository.topics.TopicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

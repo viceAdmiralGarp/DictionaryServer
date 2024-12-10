@@ -1,4 +1,4 @@
-package com.mmdev.dictionaryy.repository;
+package com.mmdev.dictionaryy.repository.school;
 
 import com.mmdev.dictionaryy.entity.school.School;
 import org.springframework.data.jpa.repository.JpaRepository;

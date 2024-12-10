@@ -1,4 +1,4 @@
-package com.mmdev.dictionaryy.controller;
+package com.mmdev.dictionaryy.controller.school;
 
 import com.mmdev.dictionaryy.entity.school.School;
 import com.mmdev.dictionaryy.model.school.SchoolDto;
