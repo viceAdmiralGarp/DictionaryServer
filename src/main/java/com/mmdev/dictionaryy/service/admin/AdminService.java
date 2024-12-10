@@ -1,4 +1,4 @@
-package com.mmdev.dictionaryy.service;
+package com.mmdev.dictionaryy.service.admin;
 
 import com.mmdev.dictionaryy.entity.admins.Admin;
 import com.mmdev.dictionaryy.exception.EntityAlreadyRelatedException;

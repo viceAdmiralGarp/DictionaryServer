@@ -1,4 +1,4 @@
-package com.mmdev.dictionaryy.service;
+package com.mmdev.dictionaryy.service.words;
 
 import com.mmdev.dictionaryy.entity.words.NativeWord;
 import com.mmdev.dictionaryy.exception.EntityNotFoundException;

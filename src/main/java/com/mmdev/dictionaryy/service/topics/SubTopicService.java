@@ -1,4 +1,4 @@
-package com.mmdev.dictionaryy.service;
+package com.mmdev.dictionaryy.service.topics;
 
 import com.mmdev.dictionaryy.entity.topics.SubTopic;
 import com.mmdev.dictionaryy.entity.topics.Topic;

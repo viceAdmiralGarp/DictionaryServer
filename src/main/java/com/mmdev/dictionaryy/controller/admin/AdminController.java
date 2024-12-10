@@ -2,7 +2,7 @@ package com.mmdev.dictionaryy.controller.admin;
 
 import com.mmdev.dictionaryy.entity.admins.Admin;
 import com.mmdev.dictionaryy.model.admin.AdminDto;
-import com.mmdev.dictionaryy.service.AdminService;
+import com.mmdev.dictionaryy.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

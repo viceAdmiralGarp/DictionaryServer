@@ -2,7 +2,7 @@ package com.mmdev.dictionaryy.controller.topics;
 
 import com.mmdev.dictionaryy.entity.topics.Topic;
 import com.mmdev.dictionaryy.model.topics.topic.TopicDto;
-import com.mmdev.dictionaryy.service.TopicService;
+import com.mmdev.dictionaryy.service.topics.TopicService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

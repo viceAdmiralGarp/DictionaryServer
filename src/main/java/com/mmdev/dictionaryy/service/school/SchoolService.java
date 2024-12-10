@@ -1,4 +1,4 @@
-package com.mmdev.dictionaryy.service;
+package com.mmdev.dictionaryy.service.school;
 
 import com.mmdev.dictionaryy.entity.admins.Admin;
 import com.mmdev.dictionaryy.entity.school.School;
@@ -6,6 +6,7 @@ import com.mmdev.dictionaryy.exception.EntityAlreadyRelatedException;
 import com.mmdev.dictionaryy.exception.EntityNotFoundException;
 import com.mmdev.dictionaryy.model.school.SchoolDto;
 import com.mmdev.dictionaryy.repository.school.SchoolRepository;
+import com.mmdev.dictionaryy.service.admin.AdminService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;

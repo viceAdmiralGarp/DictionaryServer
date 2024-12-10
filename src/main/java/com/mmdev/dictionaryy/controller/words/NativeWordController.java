@@ -1,7 +1,7 @@
 package com.mmdev.dictionaryy.controller.words;
 
 import com.mmdev.dictionaryy.model.words.NativeWordDto;
-import com.mmdev.dictionaryy.service.NativeWordService;
+import com.mmdev.dictionaryy.service.words.NativeWordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,13 +23,13 @@ public class NativeWordController {
 	private final NativeWordService nativeWordService;
 
 	@GetMapping
-	public ResponseEntity<List<NativeWordDto>> getAllAdmins() {
+	public ResponseEntity<List<NativeWordDto>> getNativeWords() {
 		List<NativeWordDto> allNativeWords = nativeWordService.getAllNativeWords();
 		return ResponseEntity.ok(allNativeWords);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<NativeWordDto> getAdminById(@PathVariable Long id) {
+	public ResponseEntity<NativeWordDto> findNativeWordById(@PathVariable Long id) {
 		NativeWordDto nativeWordDto = nativeWordService.getNativeWordById(id);
 		return ResponseEntity.ok(nativeWordDto);
 	}

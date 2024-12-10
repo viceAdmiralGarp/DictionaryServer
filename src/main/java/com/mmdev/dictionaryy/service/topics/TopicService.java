@@ -1,4 +1,4 @@
-package com.mmdev.dictionaryy.service;
+package com.mmdev.dictionaryy.service.topics;
 
 import com.mmdev.dictionaryy.entity.school.School;
 import com.mmdev.dictionaryy.entity.topics.Topic;
@@ -6,6 +6,7 @@ import com.mmdev.dictionaryy.exception.EntityAlreadyRelatedException;
 import com.mmdev.dictionaryy.exception.EntityNotFoundException;
 import com.mmdev.dictionaryy.model.topics.topic.TopicDto;
 import com.mmdev.dictionaryy.repository.topics.TopicRepository;
+import com.mmdev.dictionaryy.service.school.SchoolService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

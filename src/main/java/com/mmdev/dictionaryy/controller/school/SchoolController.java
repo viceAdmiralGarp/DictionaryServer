@@ -2,7 +2,7 @@ package com.mmdev.dictionaryy.controller.school;
 
 import com.mmdev.dictionaryy.entity.school.School;
 import com.mmdev.dictionaryy.model.school.SchoolDto;
-import com.mmdev.dictionaryy.service.SchoolService;
+import com.mmdev.dictionaryy.service.school.SchoolService;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
